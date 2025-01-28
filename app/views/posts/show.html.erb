@@ -1,0 +1,35 @@
+<h1><%= @post&.title %></h1>
+
+<p><strong>Description:</strong> <%= @post&.description %></p>
+
+<p><strong>Tags:</strong> <%= @post&.tag_list.join(', ') %></p>
+
+<% if @post&.images.attached? %>
+  <h3>Images:</h3>
+  <% @post.images.each do |image| %>
+    <%= image_tag image, class: "img-thumbnail", width: 300 %>
+  <% end %>
+<% end %>
+
+<hr>
+
+<h2>Comments</h2>
+<%= form_with(model: [@post, Comment.new], local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :content, "Add a comment:" %>
+    <%= form.text_area :content, class: "form-control", placeholder: "Write your comment here" %>
+  </div>
+  <div class="form-group">
+    <%= form.submit "Post Comment", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<ul>
+  <% @post&.comments.each do |comment| %>
+    <li>
+      <p><strong><%= comment&.user&.email %>:</strong> <%= comment&.content %></p>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "Back to Posts", posts_path, class: "btn btn-secondary" %>

@@ -1,0 +1,41 @@
+<h1>New Post</h1>
+
+<%= form_with model: @post, local: true do |form| %>
+  <% if @post.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <ul>
+        <% @post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :title, "Title" %>
+    <%= form.text_field :title, class: "form-control", placeholder: "Enter the title of your post" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description, "Description" %>
+    <%= form.text_area :description, class: "form-control", placeholder: "Write the description of your post" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :images, "Images" %>
+    <%= form.file_field :images, multiple: true, class: "form-control" %>
+    <p>Tip: You can upload multiple images.</p>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :tag_list, "Tags" %>
+    <%= form.text_field :tag_list, class: "form-control", placeholder: "Enter tags separated by commas" %>
+    <p>Example: travel, adventure, lifestyle</p>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Create Post", class: "btn btn-primary" %>
+    <%= link_to "Cancel", posts_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
