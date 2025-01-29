@@ -1,11 +1,26 @@
 <h1>Posts</h1>
-<%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
 
-<% @posts.each do |post| %>
-  <div>
-    <h2><%= post.title %></h2>
-    <p><%= post.description %></p>
-    <%= link_to 'View Post', post_path(post), class: 'btn btn-secondary' %>
+<%= form_tag posts_path, method: :get, class: "mb-4" do %>
+  <div class="input-group">
+    <%= text_field_tag :query, params[:query], class: "form-control", placeholder: "Search posts..." %>
+    <div class="input-group-append">
+      <%= submit_tag "Search", class: "btn btn-primary" %>
+    </div>
   </div>
 <% end %>
-<%= will_paginate @posts %>
+
+<%= link_to 'New Post', new_post_path, class: 'btn btn-primary mb-3' %>
+
+<% if @posts.any? %>
+  <% @posts.each do |post| %>
+    <div class="card mb-3 p-3">
+      <h2><%= post.title %></h2>
+      <p><%= truncate(post.description, length: 150) %></p>
+      <%= link_to 'View Post', post_path(post), class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+
+  <%= will_paginate @posts %>
+<% else %>
+  <p class="text-muted">No posts found.</p>
+<% end %>

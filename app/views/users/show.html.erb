@@ -1,0 +1,23 @@
+<div class="container mt-4">
+  <h2>Profile Details</h2>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><%= current_user.email %></h5>
+
+        <% if current_user.avatar.present? %>
+            <img src="<%= current_user.avatar.url %>" class="img-thumbnail" width="150">
+        <% else %>
+            <p>No profile picture uploaded</p>
+        <% end %>
+
+      <p><strong>City:</strong> <%= current_user.city || "Not specified" %></p>
+      <p><strong>State:</strong> <%= current_user.state || "Not specified" %></p>
+      <p><strong>Country:</strong> <%= current_user.country || "Not specified" %></p>
+      <p><strong>Phone:</strong> <%= current_user.phone || "Not specified" %></p>
+      <p><strong>Gender:</strong> <%= current_user.gender || "Not specified" %></p>
+
+      <%= link_to "Edit Profile", edit_user_path(current_user), class: "btn btn-primary" %>
+    </div>
+  </div>
+</div>

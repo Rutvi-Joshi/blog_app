@@ -2,11 +2,13 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @comment = current_user.comments.build(comment_params)
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.build(comment_params)
+    @comment.user = current_user
     if @comment.save
-      redirect_to post_path(@post), notice: 'Comment added successfully!'
+      redirect_to @post, notice: "Comment added!"
     else
-      redirect_to post_path(@comment.post), alert: 'Failed to add comment.'
+      render "posts/show"
     end
   end
 

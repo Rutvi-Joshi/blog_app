@@ -1,16 +1,23 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!
-  
+    before_action :authenticate_user!, except: [:index, :show]
+    
   def index
-    @posts = Post.paginate(page: params[:page], per_page: 10).order('created_at DESC')
+    if params[:query].present?
+      @posts = Post.where("title LIKE ? OR description LIKE ?", "%#{params[:query]}%", "%#{params[:query]}%")
+                   .paginate(page: params[:page], per_page: 10)
+                   .order('created_at DESC')
+    else
+      @posts = Post.paginate(page: params[:page], per_page: 10).order('created_at DESC')
+    end
   end
 
   def new
-    @post = current_user.posts.build
+    @post = Post.new
   end
 
   def show
     @post = Post.find(params[:id])
+    @comments = @post.comments.order(created_at: :desc)
   end
 
   def create
